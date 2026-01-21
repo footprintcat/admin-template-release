@@ -1,5 +1,11 @@
 # Changelog
 
+# v0.0.3
+
+- docs: README.md 小改动
+- fix: 修复发布仓库丢失 . 开头的代码文件问题
+
+
 # v0.0.2
 
 - chore(backend): 升级后端部分依赖版本
