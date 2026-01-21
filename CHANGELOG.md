@@ -1,0 +1,266 @@
+# Changelog
+
+# v0.0.1
+
+- initial commit
+- 创建后端项目
+- 后端项目初始化
+- 升级 pom.xml 中依赖版本
+- 小改动
+- 完善后端代码项目
+- 完善后端代码项目
+- 后端一些后台管理相关的工具类
+- 完善后端代码
+- 创建前端项目
+- 更新文档: 前端技术栈
+- 更新后台管理 favicon 图标
+- frontend 项目初始化配置；引入一些基础包
+- frontend 打包时设置 __APP_BUILD_TIME__ 全局变量
+- [frontend] eslint 自定义规则
+- Add Apache 2.0 LICENSE
+- 升级前、后端依赖，更新 README.md
+- Merge remote-tracking branch 'github/main'
+- README.md 添加项目简介
+- README 添加免责条款 及 许可证 章节
+- README 格式化
+- README 添加 目录结构 板块
+- README 添加 如何更新 板块
+- README 添加跳转标题链接
+- README 添加 浏览器支持 板块
+- 更新 README.md
+- 更新 README.md
+- feat(frontend): element-plus 配置为中文
+- chore: 创建 admin-mobile 目录
+- docs: 更新 README.md
+- docs: update README badge
+- feat(frontend): 修改后台管理 baseUrl
+- feat(frontend): 完善 router 目录结构定义
+- feat(frontend): 创建 Layout 布局组件
+- chore(frontend): 创建 composables, utils 目录
+- feat(frontend): 顶部导航栏
+- chore(frontend): store 目录调整为 stores
+- feat(frontend): tab标签栏
+- feat(frontend): import 自动排序
+- feat(frontend): import 自动排序，import 与代码之间至少保留1个换行
+- feat(frontend): 优化 import 排序
+- feat(frontend): 实现左侧 sidebar
+- feat(frontend): permiss 改为 permission
+- feat(frontend): npm run lint
+- fix(frontend): fix build error: Component name "sidebar" should always be multi-word
+- chore(vscode): 添加 vscode 拼写检查白名单
+- feat(frontend): 修复 sidebar 左下角图标不显示问题
+- feat(frontend): 当路由不存在时跳转后台首页
+- feat(frontend): 错误页
+- feat(frontend): tab页面支持通过 no-scroll 样式指定不显示滚动条
+- feat(frontend): router 调整
+- feat(frontend): 添加用户管理 tab 页
+- feat(frontend): 修改前端调试端口为 5983
+- feat(frontend): 更新底层 Vue 3 框架依赖
+- chore(frontend): npm update
+- feat(backend): 实现 manage-list 后端框架逻辑
+- feat(frontend): manage-list 组件前端样式布局
+- feat(backend): 添加 .editorconfig
+- feat(frontend): views 页面添加 class="no-scroll" 即不显示滚动条
+- feat(frontend): 页面标题组件
+- feat(frontend): 实现组合式函数 useWindowResize
+- fix(frontend): manage-list 组件网页高度缩小时，表格高度不会缩小问题
+- fix(frontend): 不添加 no-scroll 样式时也不展示滚动条问题
+- feat(frontend): tab 页面内边距缩小 (30px -> 20px)
+- feat(frontend): manage-list 组件支持渲染查询条件
+- chore(backend): User 实体类改名为 SystemUser
+- feat(backend): 查询用户列表时不过滤 su 账号
+- chore(backend): 后端添加 develop 调试运行配置
+- feat(frontend): manage-list 支持接口调用及表格展示
+- feat(frontend): manage-list 导出文件弹窗
+- feat(frontend): manage-list 组件卡片圆角及阴影样式
+- feat(frontend): manage-list 支持重置查询条件
+- feat(backend): 后端升级至 spring boot 4.x
+- feat(frontend): manage-list 支持打印 debug 详细日志
+- chore(frontend): 引入 dayjs, xlsx 库
+- chore(frontend): 升级 xlsx 依赖版本
+- chore(frontend): 升级 element-plus 依赖版本至 2.11.9
+- chore(frontend): 升级 pinia, pinia-plugin-persistedstate 依赖版本
+- chore(frontend): 升级依赖版本 (package-lock.json)
+- feat(frontend): manage-list 日期时间查询条件优化
+- feat(backend, frontend): 用户列表查询前后端逻辑打通
+- chore(frontend): 升级 unplugin-vue-components 依赖版本
+- feat(frontend): 前端下载文件
+- scripts(sql): 完善 SQL 脚本
+- scripts(sql): 建表语句表注释单独一行，方便查看
+- scripts(sql): 数据库调试用数据
+- script(sql): 非 develop 脚本 不添加 DROP TABLE IF EXISTS 语句
+- fix(frontend): 修正导出文件弹窗 ts 类型问题
+- feat(frontend): 表格支持传入 tableColumnList 渲染及排序
+- scripts(sql): 角色、租户表新增层级字段
+- feat(frontend): 前端添加重置筛选条件按钮
+- feat(frontend): 表格前端支持多字段排序
+- feat(frontend): 多字段排序支持配置初始排序
+- feat(frontend): 完善筛选、分页前端逻辑
+- feat(frontend): 分页查询如果超出最后一页, 则跳转到最后一页
+- feat(frontend): 新增 网页标题更新 路由守卫
+- feat(backend): 后端 SystemUser 实体类补充字段
+- feature(frontend): 列表字段翻译
+- feat(frontend): 列表查询应打印 requestParam 而不是 params
+- chore(frontend): 升级 Vue 框架依赖版本
+- feat(frontend): 完善 package.json 中依赖用途说明
+- chore(frontend): 项目依赖固定次版本号
+- docs: 更新 README.md 中技术栈版本信息
+- chore(frontend): 升级 Vue 框架后项目配套文件升级
+- refactor(backend): Role 改名为 SystemRole
+- feature(backend): 新增 system_menu, system_privilege, system_user_auth 表
+- feature(backend): system_tenant, system_menu, system_privilege, system_user_auth 表生成实体类
+- feat(backend): 配置 mybatis-plus 乐观锁插件
+- feat(backend): roleId 改为 Long 类型
+- fix(backend): 升级到 Spring Boot 4.x 后测试类报错找不到 @AutoConfigureDataJdbc 注解问题
+- fix(backend): 后端报错
+- style(backend): MybatisPlusEntityGenerator 代码格式化
+- fix(sql): 数据库初始化脚本字段更新以适配新对象结构
+- feat(backend): 创建用户状态枚举
+- feat(backend): 数据库表添加 tenant_id 字段
+- feat(backend): 后端 Controller url 参数前缀调整
+- feat(backend): entity 实体类字段定义更新
+- fix(backend): 运行报错问题
+- refactor(backend): 逻辑删除使用删除时间，以解决逻辑删除字段与唯一索引冲突问题
+- feat(backend): 用户表添加 type 字段，菜单表添加 menu_path、can_edit 字段
+- feat(backend): 新增 system_log, system_log_detail 表
+- refactor(backend): enum 枚举类包名整理
+- chore(backend): Mapper 接口注释表名
+- feat(frontend): 新增登录页组件
+- docs: 添加 基础功能模块文档
+- feat(backend): system_menu 表新增 module 字段， 完善 system_privilege 表
+- docs: 文档重命名
+- feat: 添加全局 .editorconfig 文件
+- feat(frontend): 本地调试模式网页标题添加 [DEV] 前缀便于区分环境
+- refactor(backend): 后端 dto 类使用小驼峰规范写法
+- refactor(backend): CommonReturnType 改为 CommonReturn
+- refactor(backend): 后台用户认证相关逻辑重构：登录、退出登录、获取用户信息、修改密码
+- refactor(backend): session 中不保存 roleId；用户密码认证逻辑迁移至 SystemUserAuth 中；新增 SystemUserAuthTypeEnum 枚举
+- feat(backend): mybatis-plus 逻辑删除字段配置
+- feat: 登录接口前后端调通
+- feat(frontend): 未登录状态跳转登录页
+- feat(frontend): 调用接口时允许携带 Cookie
+- feat(frontend): 后台管理对接退出登录接口
+- refactor(backend): 后端枚举字段 code 改为小写下划线
+- feat(backend): 非 normal 状态的用户不允许登录
+- feat(backend): 创建 system_department, system_user_department_relation, system_user_role_relation 表，后端实体类对象更新
+- chore(backend): 后端代码风格统一
+- feat(backend): 创建 system_job_position 表，部分表字段统一
+- feat(sql): 数据库 parent_id 添加索引
+- feat(sql): 完善数据库测试数据
+- chore(idea): 忽略 .idea 目录部分 .xml 文件
+- feat(backend): 递归获取指定角色的所有上级角色列表查询 SQL
+- feat(backend): mybatis-plus-generator 按照模块生成实体类
+- refactor(backend): 后端 controller, entity 包目录整理
+- refactor(backend): 按照项目模块重新组织代码
+- refactor(backend): 移除无用代码
+- refactor(backend): 移除实体类模块前缀
+- chore(backend): entity 上 @Schema 注释移除模块前缀
+- fix(backend): @MapperScan 扫不到 mapper 问题
+- Merge branch 'refactor-package-path'
+- chore(frontend): 升级依赖版本
+- feat(sql): system_privilege 表新增 grant_type 字段
+- refactor(backend): controller api 地址版本号调整
+- feat(frontend): 前端请求 url 前缀调整
+- feat(backend): 后端登录校验移动至 AuthInterceptor 类，新增 @PublicAccess 注解，标记接口访问时无需登录态
+- refactor(backend): Filter 不再使用 Servlet @WebFilter 注解，改为使用 @Component + @FilterRegistration 方式加载以支持指定 Filter 顺序
+- feat(backend): CORS 跨域问题已在 ResponseHeaderFilter 中解决，Controller 上不再需要添加 @CrossOrigin 注解
+- feat(backend): filter 移至 common 包下，common 包中子包添加 package-info.java
+- feat(backend): 配置 JSON 返回结果序列化：Long 返回时序列化为 String
+- feat(backend): 配置 Controller 上 Swagger openapi 文档信息
+- deps: Spring Boot 4 已弃用 spring-boot-starter-web，改为使用 spring-boot-starter-webmvc
+- feat(backend): Controller 类名去掉版本号
+- feat(backend): 系统菜单表调整
+- feat(backend): 创建用户身份表
+- feat(backend): 支持通过 userId 获取身份列表
+- feat(backend): CommonReturn 添加 swagger 描述
+- feat(backend): 后台登录接口 登录成功后返回用户身份列表
+- refactor(backend): 移除类名前的模块前缀
+- chore(backend): 后端优化 import
+- feat(backend): 生产环境禁用 Swagger 文档
+- refactor(backend): extends BaseController 方式处理接口异常改为 @HandleControllerGlobalException 注解方式
+- refactor(backend): 自定义注解所在包调整
+- feat(backend): 支持通过 jakarta.validation 注解校验接口请求参数
+- feat(backend): 切换用户身份、获取当前身份接口
+- feat(backend): getAllAncestorByRoleIdList 支持 distinct 去重
+- refactor(backend): 移除 system_user_department_relation 表
+- feat(sql): 数据库结构调整，后端生成实体类
+- feat(backend): 添加用户未选择身份异常枚举项
+- feat(backend): 移除 UserRoleRelation 实体类
+- feat(backend): 后端实现 获取当前用户所有权限列表 接口
+- feat(backend): 后段项目 pom.xml 中支持配置项目级阿里云镜像地址
+- feat(backend): 后端创建项目模块
+- feat(backend): 创建外层 pom.xml 便于 idea 识别项目
+- fix(backend): Arrays.asList 换为 new String[] 以避免 Arrays.asList(null) 空指针问题
+- Revert "feat(backend): 创建外层 pom.xml 便于 idea 识别项目"
+- Revert "feat(backend): 后端创建项目模块"
+- style(backend): jetbrains.annotations 注解不再单独占一行
+- refactor(frontend): UserStore 改为组合式写法
+- feat(frontend): 登录逻辑完善优化
+- fix(frontend): 修正 manage-list 前端 ts 类型
+- feat(frontend): 完善登录跳转逻辑；feat(backend): 后端返回结构添加 errCode 字段；调试状态全局捕获异常不在返回前端；获取用户信息接口不再校验登录态
+- feat(backend): 启动时打印日志统一移至 ProjectConfigPrinter
+- feat(backend): 移除 project-config.config-name 配置项
+- feat(backend): 本地调试模式启用 swagger 接口文档
+- feat(backend): 本地启动时支持指定多个配置文件
+- feat(backend): 请求接口不存在时返回自定义错误信息
+- fix(backend): ManageFilter 中 fileName 字符串不正确问题
+- feat(frontend): 添加全局 Loading (useLoading)，接口请求时支持指定是否显示 Loading
+- feat(frontend): 网页加载时 fetchUserInfo 请求失败弹窗提示，并支持点击重试
+- fix(backend): 修正 getCurrentIdentity 接口逻辑错误
+- feat(sql): system_config 表及实体类
+- refactor(backend): SystemConfigService 中逻辑迁移至 ConfigRepository
+- feat(backend): 新增 ConfigScopeEnum 枚举
+- chore: 一些代码小改动
+- chore(frontend): 变量名调整
+- feat(frontend): 前端错误页处理
+- feat(frontend): 移除不必要的 console.log
+- feat(frontend): 自定义权限指令移至 permission store
+- feat(frontend): useErrorPage 放在 createGuard 外部避免反复调用
+- feat(frontend): 用户登录后记录 identityList
+- feat(frontend): 登录后选择身份
+- chore(sql): 测试数据完善
+- fix(frontend): 右上角用户昵称未展示问题修复
+- feat(frontend): 登录页、切换身份页跳转 逻辑抽离为公共函数
+- fix(frontend): 登录按钮点击 loading 状态未正确展示问题
+- feat: 支持退出身份
+- refactor(backend): 移除 getCurrentUserPrivilegeList 接口
+- fix(backend): 获取身份权限接口内部逻辑错误
+- feat(backend): 获取身份权限菜单接口支持返回菜单详情
+- chore(frontend): 升级前端 Vue 框架依赖版本
+- chore(frontend): 升级前端依赖版本
+- feat(backend): 后端引入 MapStruct 进行对象转换
+- chore(backend): 升级后端依赖版本
+- fix(backend): 修正 MapStruct 转换时部分 source 中存在但 target 中不存在的字段编译打包时提示 WARNING 问题
+- chore(git): 将 package-lock.json 标记为 linguist-generated
+- feat(frontend): 前端异常 code 添加 enum 枚举 (BusinessErrorCode)
+- refactor(frontend): 项目 ts 类型定义目录结构调整
+- fix(frontend): 修复其前端打包时报错
+- fix(backend): 修复 MapStruct 使用 Converter.INSTANCE 方式的转换使用 ConvertHelper 类时报错空指针问题
+- feat(backend): 后端接口实现按照指定列排序
+- feat(frontend): 到处选项弹窗添加数据范围选项
+- feat(backend): 移除后端 获取当前用户所有权限列表 接口
+- feat(frontend): 切换身份时携带 redirect_to 参数
+- refactor(frontend): 登录 -> 选择身份 -> 进入后台链路逻辑重构；user, identity, permission store 添加 init 逻辑；router guard 中不应每次都调用获取信息接口；userLogout 退出登录逻辑优化
+- feat(frontend): route 文件改为 export const 方式便于摇树优化
+- feat(frontend): dashboard 页面不添加 permission
+- chore(frontend): sidebar 菜单项定义移至 router 目录
+- feat(frontend): sidebar 菜单项定义抽离出来
+- feat(frontend): 用户信息、用户身份获取失败重试时 await 等待结果
+- feat(frontend): 系统导航 navi 改为 navigation
+- style(frontend): 后台管理项目代码 lint 规范化
+- chore(frontend): 升级前端依赖版本
+- fix(git): 修复 git 报错 ... is not a valid attribute name: .gitattributes:1
+- style(frontend): 代码格式化
+- feat(sql): system_privilege 表 entity_type 对象类型 user 改为 identity
+- fix(backend): 修复获取权限列表接口一处查询条件错误
+- feat(frontend): 前后端权限对应一致
+- feat(frontend): 列表查询 pageSize 查询条数下拉框添加更多选项
+- feat(backend): system_identity 表新增 身份名称、身份描述 字段
+- feat: 用户身份页支持展示身份名称及描述，样式优化
+- chore(frontend): 升级前端依赖版本
+- chore(frontend): 升级前端依赖版本
+- ci: add auto release scripts
+- ci: 确保代码正确生成至目标仓库
+- ci: 更新仓库 README.md 及 release 仓库 README
+- ci(fix): 修正 GitHub Actions 脚本 CHANGELOG 生成逻辑
+- ci(chore): release仓库 README.md 更新
