@@ -1,5 +1,10 @@
 # Changelog
 
+# v0.0.4
+
+- fix: 修复发布仓库中项目代码缺失问题
+
+
 # v0.0.3
 
 - docs: README.md 小改动

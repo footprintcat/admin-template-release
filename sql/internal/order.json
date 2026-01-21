@@ -1,0 +1,6 @@
+[
+    "@table_template@",
+    "system_user",
+    "system_tenant",
+    "role"
+]
