@@ -1,5 +1,11 @@
 # Changelog
 
+# v0.0.2
+
+- chore(backend): 升级后端部分依赖版本
+- chore(backend): 升级前端依赖版本
+
+
 # v0.0.1
 
 - initial commit
