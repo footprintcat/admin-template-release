@@ -1,5 +1,14 @@
 # Changelog
 
+# v0.0.5
+
+- chore(ai): 创建 AI 编辑器 (Qoder, TRAE) Rules 提示词
+- docs(ai): 完善面向 AI 的项目文档
+- chore: prettier 扩展由 prettier.prettier-vscode 还原为 esbenp.prettier-vscode (see: https://github.com/prettier/prettier-vscode/issues/3872#issuecomment-3662898646)
+- docs(ai): 创建 skills 目录，精简 rules
+- ci(fix): 发布仓库不应包含 internal 文档
+
+
 # v0.0.4
 
 - fix: 修复发布仓库中项目代码缺失问题
