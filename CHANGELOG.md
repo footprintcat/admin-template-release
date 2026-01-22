@@ -1,5 +1,11 @@
 # Changelog
 
+# v0.0.6
+
+- docs: 更新项目 README.md
+- chore(deps): 升级前端依赖版本
+
+
 # v0.0.5
 
 - chore(ai): 创建 AI 编辑器 (Qoder, TRAE) Rules 提示词
