@@ -1,5 +1,13 @@
 # Changelog
 
+# v0.0.7
+
+2026-01-23 发布，该版本包含以下改动：
+
+- fix(frontend): 修复 manage-list 列表组件 fetch-data 类型定义不正确问题
+- ci: 生成 changelog 时，版本信息添加当前年月日
+
+
 # v0.0.6
 
 - docs: 更新项目 README.md
