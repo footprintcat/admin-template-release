@@ -1,5 +1,16 @@
 # Changelog
 
+# v0.0.8
+
+2026-02-03 发布，该版本包含以下改动：
+
+- feat(frontend): manage-list 页面底部添加 重置排序 按钮
+- feat(frontend): 接口地址改为在 .env 文件中配置
+- feat(frontend): 网站名称 配置迁移到 .env 中
+- feat(frontend): 网站全称 配置迁移到 .env 中
+- chore(frontend): 升级前端依赖版本
+
+
 # v0.0.7
 
 2026-01-23 发布，该版本包含以下改动：
