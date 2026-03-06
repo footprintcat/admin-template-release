@@ -1,5 +1,16 @@
 # Changelog
 
+# v0.0.9
+
+2026-03-06 发布，该版本包含以下改动：
+
+- chore(frontend): 升级前端框架依赖版本
+- chore(backend): 升级后端部分依赖版本
+- chore(frontend): 升级前端框架依赖版本
+- feat(frontend): router next() 写法现已弃用，换用 return 等价写法 see: https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%8F%AF%E9%80%89%E7%9A%84%E7%AC%AC%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0-next
+- feat: ref<InstanceType<typeof ...>>() 写法改为 vue 3.5+ 新写法 useTemplateRef('xxx')
+
+
 # v0.0.8
 
 2026-02-03 发布，该版本包含以下改动：
