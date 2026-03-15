@@ -1,5 +1,24 @@
 # Changelog
 
+# v0.1.0
+
+2026-03-15 发布，该版本包含以下改动：
+
+- feat(frontend): manage-list 查询条件适配窄屏
+- feat(docs): 新增后端分层设计细节图
+- feat(frontend): manage-list 支持隐藏导出按钮
+- feat(backend): 后端添加 Fesod Spreadsheet 依赖以支持后端导出 excel
+- fix(backend): UserService 不应 extends mybatis-plus 相关 class
+- fix(frontend): 请求成功时，不应携带错误的 toastMessage
+- feat(backend): 支持后端导出用户列表 xlsx (前端导出尚未完成)
+- docs(ai): 创建 .codebuddy 目录符号链接
+- docs(ai): fix 符号链接相对路径错误问题
+- feat: 支持开启登录验证码 (可在后台配置中指定是否开启)
+- feat(backend): 移除一个不再使用的配置项
+- chore: 升级前、后端框架依赖版本
+- chore: package.json 描述按顺序排列
+
+
 # v0.0.9
 
 2026-03-06 发布，该版本包含以下改动：

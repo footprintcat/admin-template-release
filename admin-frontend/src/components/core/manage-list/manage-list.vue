@@ -1,10 +1,10 @@
 <template>
   <div class="manage-list-wrapper" :class="[props.tableFillHeight ? 'fill-height' : '']">
     <!-- 顶部查询条件 -->
-    <div class="top-container container-style">
+    <div class="top-container container-style" ref="topContainerRef">
       <manage-list-search-form ref="manageListSearchFormRef" :search-form-label-position="props.searchFormLabelPosition"
         :search-input-list="props.searchInputList" :extra-initial-params="props.extraInitialParams"
-        @change="handleParamsUpdate" />
+        @change="handleParamsUpdate" :is-narrow-screen="isNarrowScreen" />
       <div>
         <el-button type="primary" :icon="Search" @click="handleFetchData({ gotoFirstPage: true })"
           :loading="props.allowParallelFetch ? false : isLoading">
@@ -17,7 +17,8 @@
           重置排序
         </el-button>
         <!-- type="primary" plain -->
-        <el-button type="primary" plain :icon="Download" @click="handleExportFile">
+        <el-button v-if="props.showExportButton" type="primary" plain :icon="Download" @click="handleExportFile"
+          :disabled="!props.exportDataFrontend && !props.exportDataBackend">
           导出到文件
         </el-button>
 
@@ -86,7 +87,9 @@
     </div>
 
     <!-- 导出文件弹窗 -->
-    <export-file-dialog v-model="showExportFileDialog" />
+    <export-file-dialog v-if="props.exportDataFrontend || props.exportDataBackend" v-model="showExportFileDialog"
+      :get-search-form-params="getSearchFormParams" :total-count="total" :page-query="pageQuery" :sort-list="sortList"
+      :export-data-frontend="exportDataFrontend" :export-data-backend="exportDataBackend" />
   </div>
 </template>
 
@@ -97,6 +100,7 @@ import type { ApiCommonReturnType } from '@/utils/api'
 import type { ManageListResponse } from '@/types/backend/common/manage-list-response'
 import ManageListSearchForm from './components/manage-list-search-form.vue'
 import ExportFileDialog from './export-file/export-file-dialog.vue'
+import type { ExportResult } from './export-file/types'
 import type { RequestParam, SortItemWithLabel } from './types/request-param'
 import type { SearchInputList } from './types/search-input'
 import type { TableColumnList } from './types/table-column'
@@ -127,6 +131,15 @@ interface Props {
    */
   extraInitialParams?: Record<string, unknown>
   fetchData: (requestParams: RequestParam) => Promise<ApiCommonReturnType<ManageListResponse<unknown>>>
+  /**
+   * 导出数据接口函数
+   * 如果未提供，则导出按钮不可用
+   */
+  exportDataFrontend?: (requestParams: RequestParam) => Promise<ApiCommonReturnType<ExportResult>>
+  /**
+   * 后端导出 xlsx 文件
+   */
+  exportDataBackend?: (requestParams: RequestParam) => Promise<void>
   /**
    * 组件挂载时是否拉取数据
    */
@@ -163,12 +176,19 @@ const props = withDefaults(defineProps<Props>(), {
 const manageListTableRef = useTemplateRef('manageListTableRef')
 const manageListSearchFormRef = useTemplateRef('manageListSearchFormRef')
 
+// DOM ref
+const topContainerRef = useTemplateRef('topContainerRef')
+
 // 排序信息
 const sortList = ref<Array<SortItemWithLabel>>([])
 // 初始排序状态
 const initialSortList = ref<Array<SortItemWithLabel>>([])
 
 // 查询条件
+function getSearchFormParams() {
+  return manageListSearchFormRef.value?.getParams()
+}
+
 function handleParamsUpdate(params: Record<string, unknown>) {
   // console.log('paramsUpdate', params)
 }
@@ -301,7 +321,7 @@ async function handleFetchData({
     console.log(new Date().toLocaleString())
   }
   console.log('==========', 'fetchData start', '==========')
-  const params = manageListSearchFormRef.value?.getParams()
+  const params = getSearchFormParams()
   // console.log('param', param)
   const requestParam: RequestParam = {
     params: {
@@ -444,6 +464,35 @@ onMounted(() => {
   }
   */
 })
+
+
+// 是否是窄屏
+const isNarrowScreen = ref(false)
+let narrowScreenObserver: ResizeObserver | null
+const narrowScreenBreakpoint: number = 470
+onMounted(() => {
+  narrowScreenObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      // 获取元素的内容宽度
+      const width = entry.contentRect.width
+      // 更新响应式变量的值
+      isNarrowScreen.value = width < narrowScreenBreakpoint
+    }
+  })
+  const topContainerDiv: HTMLDivElement | null = topContainerRef.value
+  if (topContainerDiv) {
+    narrowScreenObserver.observe(topContainerDiv)
+  } else {
+    console.warn('topContainerDiv is null')
+  }
+})
+onUnmounted(() => {
+  if (narrowScreenObserver) {
+    narrowScreenObserver.disconnect()
+    narrowScreenObserver = null
+  }
+})
+
 </script>
 
 <style scoped>
