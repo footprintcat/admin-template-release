@@ -12,12 +12,13 @@ import com.example.backend.common.PageTable.enums.EditType;
 import com.example.backend.common.PageTable.enums.FieldType;
 import com.example.backend.common.PageTable.enums.SearchType;
 import com.example.backend.common.annotations.HandleControllerGlobalException;
+import com.example.backend.common.baseobject.request.ManageListExportQueryRequest;
 import com.example.backend.common.baseobject.request.PageQuery;
 import com.example.backend.common.baseobject.response.CommonReturn;
 import com.example.backend.common.baseobject.response.ManageListResponse;
 import com.example.backend.common.error.BusinessException;
 import com.example.backend.common.utils.ExportExcelUtils;
-import com.example.backend.controller.manage.v1.system.dto.request.user.ManageSystemUserExportRequest;
+import com.example.backend.common.utils.ManageListFrontExportBuilder;
 import com.example.backend.controller.manage.v1.system.dto.request.user.ManageSystemUserListRequest;
 import com.example.backend.modules.system.model.converter.UserConverter;
 import com.example.backend.modules.system.model.dto.UserDto;
@@ -26,6 +27,7 @@ import com.example.backend.modules.system.model.entity.User;
 import com.example.backend.modules.system.service.needrefactor.SystemRoleServiceV2;
 import com.example.backend.modules.system.service.needrefactor.SystemUserServiceV2;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -77,7 +80,7 @@ public class UserController {
 
         // 分页数据转为 DTO
         List<User> list = page.getRecords();
-        List<UserDto> dtoList = UserDto.fromEntity(list);
+        List<UserDto> dtoList = userConverter.toDto(list);
 
         ManageListResponse<UserDto> response = ManageListResponse.<UserDto>create()
                 .setTotal(page.getTotal())
@@ -95,7 +98,7 @@ public class UserController {
      * @throws IOException
      */
     @PostMapping("/export")
-    public void export(@RequestBody ManageSystemUserExportRequest requestBody, HttpServletResponse response) throws IOException {
+    public void export(@RequestBody ManageListExportQueryRequest<UserDto> requestBody, HttpServletResponse response) throws IOException, BusinessException {
         final String fileName = "用户列表_" + ExportExcelUtils.getFormattedDateInFileName() + ".xlsx";
         final String sheetName = "用户表";
 
@@ -103,8 +106,11 @@ public class UserController {
         ExportExcelUtils.setResponseHeader(response, fileName);
 
         // 查询数据
-        UserDto params = requestBody.getParams();
-        List<User> userList = systemUserServiceV2.getUserList(params);
+        List<User> userList = systemUserServiceV2.exportUserList(
+                requestBody.getPageQuery(),
+                requestBody.getParams(),
+                requestBody.getSort()
+        );
         List<UserExportDto> exportDto = userConverter.toExportDto(userList);
 
         // 导出 xlsx
@@ -119,20 +125,22 @@ public class UserController {
      * @throws IOException
      */
     @PostMapping("/export-data")
-    public CommonReturn exportData(@RequestBody ManageSystemUserExportRequest requestBody) {
+    public CommonReturn exportData(@RequestBody ManageListExportQueryRequest<UserDto> requestBody) throws BusinessException {
         final String fileName = "用户列表_" + ExportExcelUtils.getFormattedDateInFileName();
         final String sheetName = "用户表";
 
         // 查询数据
-        UserDto params = requestBody.getParams();
-        List<User> userList = systemUserServiceV2.getUserList(params);
+        @Nullable UserDto params = requestBody.getParams();
+        List<User> userList = systemUserServiceV2.exportUserList(
+                requestBody.getPageQuery(),
+                requestBody.getParams(),
+                requestBody.getSort()
+        );
         List<UserExportDto> exportDto = userConverter.toExportDto(userList);
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("data", exportDto);
-        map.put("fileName", fileName);
-        map.put("sheetName", sheetName);
-        return CommonReturn.success(map);
+        // 前端导出结构
+        Map<String, Object> build = ManageListFrontExportBuilder.build(fileName, sheetName, UserExportDto.class, exportDto);
+        return CommonReturn.success(build);
     }
 
     /**
@@ -157,7 +165,7 @@ public class UserController {
 
         // 分页数据转为 DTO
         List<User> userList = systemUserPage.getRecords();
-        List<UserDto> userDtoList = UserDto.fromEntity(userList);
+        List<UserDto> userDtoList = userConverter.toDto(userList);
 
         // id列 字段名（区分大小写；以VO中的变量名为准）
         // 新增、修改弹窗时，使用该列作为主键列进行操作
@@ -239,7 +247,7 @@ public class UserController {
         }
 
         // 传入参数 - 要修改的用户
-        User user = UserDto.toEntity(userDTO);
+        User user = userConverter.toEntity(userDTO);
 
         if (user.getId() == null || user.getId() < 1) {
             // 通过 username 查询系统中是否存在该用户

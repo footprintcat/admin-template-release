@@ -1,5 +1,22 @@
 # Changelog
 
+# v0.1.1
+
+2026-04-07 发布，该版本包含以下改动：
+
+- feat(backend): 移除不必要的 manage-list 后端 class
+- feat: 支持前端导出各种格式的列表
+- fix(frontend): 后端导出文件后应关闭导出弹窗
+- feat(frontend): 导出时禁用导出按钮，避免连击按钮触发多次导出
+- fix(backend): 修复分页 pageSize 参数传入负数还能查出一条记录问题
+- refactor(backend): 后端 UserDto 类上 fromEntity, toEntity 改为使用 Converter 类转换
+- feat(frontend): 导出弹窗宽度动态调整
+- feat: 导出功能支持携带筛选、排序、分页参数
+- docs: update README.md
+- chore(backend): 升级 MavenWrapper 版本号 (3.3.2 -> 3.3.4)
+- chore: 升级前、后端框架依赖版本 (vite 升级到 8.x 版本)
+
+
 # v0.1.0
 
 2026-03-15 发布，该版本包含以下改动：

@@ -68,7 +68,7 @@
             暂无排序
           </template>
           <template v-else>
-            按{{
+            {{ sortList.length > 1 ? '依次' : '' }}按{{
               sortList
                 .map(item => ` [${[fieldNameMap[item.field]]}] ${item.order === 'ascending' ? '升序' : '降序'}`)
                 .join('、')
@@ -101,7 +101,7 @@ import type { ManageListResponse } from '@/types/backend/common/manage-list-resp
 import ManageListSearchForm from './components/manage-list-search-form.vue'
 import ExportFileDialog from './export-file/export-file-dialog.vue'
 import type { ExportResult } from './export-file/types'
-import type { RequestParam, SortItemWithLabel } from './types/request-param'
+import type { ExportRequestParam, RequestParam, SortItemWithLabel } from './types/request-param'
 import type { SearchInputList } from './types/search-input'
 import type { TableColumnList } from './types/table-column'
 
@@ -135,11 +135,11 @@ interface Props {
    * 导出数据接口函数
    * 如果未提供，则导出按钮不可用
    */
-  exportDataFrontend?: (requestParams: RequestParam) => Promise<ApiCommonReturnType<ExportResult>>
+  exportDataFrontend?: (requestParams: ExportRequestParam) => Promise<ApiCommonReturnType<ExportResult>>
   /**
    * 后端导出 xlsx 文件
    */
-  exportDataBackend?: (requestParams: RequestParam) => Promise<void>
+  exportDataBackend?: (requestParams: ExportRequestParam) => Promise<void>
   /**
    * 组件挂载时是否拉取数据
    */

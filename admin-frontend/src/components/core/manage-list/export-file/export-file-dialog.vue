@@ -1,7 +1,10 @@
 <template>
   <!-- 导出 Excel 公共组件 -->
-  <el-dialog v-model="dialogVisible" title="导出选项" width="700px">
+  <el-dialog v-model="dialogVisible" title="导出选项" :width="dialogWidth"
+    v-if="props.exportDataFrontend !== undefined || props.exportDataBackend !== undefined">
     <!-- {{ exportConfig }} -->
+    <!-- <p>前端导出: {{ props.exportDataFrontend !== undefined ? '已配置' : '未配置' }}</p> -->
+    <!-- <p>后端导出: {{ props.exportDataBackend !== undefined ? '已配置' : '未配置' }}</p> -->
     <p style="padding-top: 5px; padding-bottom: 15px;">
       您正在导出数据
     </p>
@@ -55,14 +58,18 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="导出方式">
-        <el-radio-group v-model="exportTypeInput" :disabled="exportConfig.ext !== 'xlsx'">
-          <el-radio :value="'frontend'">
+        <!-- {{ exportConfig.exportType }} -->
+        <el-radio-group v-model="exportConfig.exportType"
+          :disabled="!frontendSupportExportFormatList.includes(exportConfig.ext as any) || !backendSupportExportFormatList.includes(exportConfig.ext as any)">
+          <el-radio :value="'backend'"
+            v-if="props.exportDataBackend !== undefined && backendSupportExportFormatList.includes(exportConfig.ext as any)">
+            服务端导出（推荐）
+            <el-text size="small">（仅支持 xlsx 格式，建议数据量较大时选择）</el-text>
+          </el-radio>
+          <el-radio :value="'frontend'"
+            v-if="props.exportDataFrontend !== undefined && frontendSupportExportFormatList.includes(exportConfig.ext as any)">
             浏览器直出
             <el-text size="small">（支持多种格式，数据量大时可能有性能问题）</el-text>
-          </el-radio>
-          <el-radio :value="'backend'">
-            服务端导出
-            <el-text size="small">（仅支持 xlsx 格式，建议数据量较大时选择）</el-text>
           </el-radio>
         </el-radio-group>
       </el-form-item>
@@ -76,9 +83,14 @@
       </el-text>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleExport" :disabled="!exportCount">导出</el-button>
+        <el-button type="primary" @click="handleExport" :disabled="!exportCount || isExporting" :loading="isExporting">
+          导出
+        </el-button>
       </span>
     </template>
+  </el-dialog>
+  <el-dialog v-else v-model="dialogVisible" title="导出选项" width="700px">
+    暂不支持导出
   </el-dialog>
 </template>
 
@@ -87,9 +99,10 @@ import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import * as xlsx from 'xlsx'
 import { downloadFile } from '@/utils/file_download_utils'
-import type { ExportConfig, ExportResult } from './types'
-import type { RequestParam, SortItemWithLabel } from '../types/request-param'
+import type { ExportConfig, ExportConfig_ExportType, ExportResult } from './types'
+import type { ExportRequestParam, SortItemWithLabel } from '../types/request-param'
 import type { ApiCommonReturnType } from '@/utils/api'
+import { backendSupportExportFormatList, frontendSupportExportFormatList, possibleSupportExportFormatList, type SupportExportFormats } from './support-export-formats'
 
 // docs: https://cn.vuejs.org/guide/components/v-model
 const dialogVisible = defineModel<boolean>({ default: false })
@@ -104,8 +117,10 @@ interface Props {
   getSearchFormParams: () => Record<string, any> | undefined
   hideDataRangeRadioBox?: boolean
   hideDataSortRadioBox?: boolean
-  exportDataFrontend?: (requestParams: RequestParam) => Promise<ApiCommonReturnType<ExportResult>>
-  exportDataBackend?: (requestParams: RequestParam) => Promise<void>
+
+  // 上级组件限制 以下两个参数至少传入1项
+  exportDataFrontend?: (requestParams: ExportRequestParam) => Promise<ApiCommonReturnType<ExportResult>>
+  exportDataBackend?: (requestParams: ExportRequestParam) => Promise<void>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -117,14 +132,47 @@ const form = reactive({}) // 弹窗字段的值
 
 // 导出 Excel 弹窗
 const exportFormVisible = ref<boolean>(false)
-const supportExportFormatList = ref(['xlsx', 'xls', 'csv', 'html', 'txt', 'json', 'rtf'] as Array<string>) // 支持的导出格式
+
+// 支持的导出格式
+const supportExportFormatList = computed<Array<SupportExportFormats>>(() => {
+  if (!props.exportDataFrontend) {
+    return backendSupportExportFormatList
+  } else if (!props.exportDataBackend) {
+    return frontendSupportExportFormatList
+  } else {
+    return possibleSupportExportFormatList
+  }
+})
+
+const exportTypeInput = ref<ExportConfig_ExportType>(props.exportDataBackend ? 'backend' : 'frontend')
 const exportConfig = ref<ExportConfig>({
   dataRange: 'all', // 导出时是否携带查询条件
   dataRangeTopN: null,
   sortType: 'none',
   filterType: 'none',
   ext: 'xlsx', // 所选导出格式
-  exportType: 'backend',
+  exportType: computed<ExportConfig_ExportType>({
+    get: (): ExportConfig_ExportType => {
+      // 假定: 前后端一定至少有一个支持导出
+      const canFrontendExport: boolean = props.exportDataFrontend !== undefined && frontendSupportExportFormatList.includes(exportConfig.value.ext as any)
+      const canBackendExport: boolean = props.exportDataBackend !== undefined && backendSupportExportFormatList.includes(exportConfig.value.ext as any)
+      // console.log('canExport', 'frontend:', canFrontendExport, 'backend:', canBackendExport)
+
+      if (!canFrontendExport) {
+        if (exportTypeInput.value === 'frontend') {
+          return 'backend'
+        }
+      } else if (!canBackendExport) {
+        if (exportTypeInput.value === 'backend') {
+          return 'frontend'
+        }
+      }
+      return exportTypeInput.value
+    },
+    set: (val: ExportConfig_ExportType) => {
+      exportTypeInput.value = val
+    },
+  }),
 })
 
 let _topN: number | null = 2000 // null
@@ -153,15 +201,6 @@ const dataRangeTopNInput = computed<ExportConfig['dataRangeTopN']>({
   },
 })
 
-const exportTypeInput = computed<ExportConfig['exportType']>({
-  get: () => {
-    return exportConfig.value.ext === 'xlsx' ? exportConfig.value.exportType : 'frontend'
-  },
-  set: (val) => {
-    exportConfig.value.exportType = val
-  },
-})
-
 const exportCount = computed<number | null>(() => {
   switch (exportConfig.value.dataRange) {
     case 'all':
@@ -181,7 +220,11 @@ const exportInfo = computed<null | { info: string; type: 'info' | 'warning' }>((
   }
   let info: string = '建议选择 xlsx 或 xls 格式'
   let type: 'info' | 'warning' = 'info'
-  if (['rtf'].includes(exportConfig.value.ext)) {
+  if (['csv'].includes(exportConfig.value.ext)) {
+    // 不推荐的导出格式
+    info = '该格式数据列易错位，且易出现编码问题，' + info
+    type = 'warning'
+  } else if (['rtf'].includes(exportConfig.value.ext)) {
     // 不推荐的导出格式
     info = '该格式易出现编码问题，' + info
     type = 'warning'
@@ -192,28 +235,47 @@ const exportInfo = computed<null | { info: string; type: 'info' | 'warning' }>((
   return { info, type }
 })
 
+const isExporting = ref<boolean>(false)
 // 点击确认后，处理导出数据
 async function handleExport() {
-  const params = props.getSearchFormParams()
-  const requestParam: RequestParam = {
-    params: exportConfig.value.dataRange ? { ...params } : {},
-    sort: props.sortList.map(item => ({
-      field: item.field,
-      order: item.order,
-    })),
-    pageQuery: {
-      pageIndex: 1,
-      pageSize: -1, // -1 表示导出全部数据
-    },
+  const params = props.getSearchFormParams() || null
+
+  const sort = props.sortList.map(item => ({
+    field: item.field,
+    order: item.order,
+  }))
+
+  let pageQuery: ExportRequestParam['pageQuery']
+  switch (exportConfig.value.dataRange) {
+    case 'all':
+      pageQuery = null
+      break
+    case 'current-page':
+      pageQuery = toRaw(props.pageQuery)
+      break
+    case 'top-n':
+      pageQuery = {
+        pageIndex: 1,
+        pageSize: exportConfig.value.dataRangeTopN!,
+      }
+      break
+  }
+
+  const requestParam: ExportRequestParam = {
+    params: exportConfig.value.filterType === 'none' ? null : params,
+    sort: exportConfig.value.sortType === 'none' ? [] : sort,
+    pageQuery: pageQuery,
   }
 
   console.log('导出请求参数', requestParam)
 
+  isExporting.value = true
   try {
-    if (props.exportDataBackend && exportConfig.value.ext === 'xlsx') {
+    if (props.exportDataBackend && exportConfig.value.exportType === 'backend') {
       // 后端导出（仅支持 xlsx）
       console.log('后端导出')
       props.exportDataBackend(requestParam)
+      dialogVisible.value = false
     } else if (props.exportDataFrontend) {
       // 前端导出
       console.log('前端导出')
@@ -232,6 +294,8 @@ async function handleExport() {
   } catch (error) {
     console.error('导出失败', error)
     ElMessage.error({ message: '导出失败，网络连接异常', grouping: true })
+  } finally {
+    isExporting.value = false
   }
 }
 
@@ -256,11 +320,18 @@ function frontendExportFile(result: ExportResult): void {
     const worksheet = xlsx.utils.aoa_to_sheet(excelList)
     const workbook = xlsx.utils.book_new()
     worksheet['!cols'] = result.head.columns.map(column => ({ wch: column.columnWidth })) // 指定列宽
-    xlsx.utils.book_append_sheet(workbook, worksheet, result.fileName || 'Sheet1')
+    xlsx.utils.book_append_sheet(workbook, worksheet, result.sheetName || 'Sheet1')
     xlsx.writeFile(workbook, _fileName)
   }
 
   ElMessage.success({ message: '导出成功' })
   exportFormVisible.value = false
 }
+
+const dialogWidth = computed<string>(() => {
+  if (exportConfig.value.dataRange === 'top-n') {
+    return `900px` // 选中 [前N条数据] 选项时，弹窗需要宽一点
+  }
+  return `700px`
+})
 </script>
